@@ -25,12 +25,6 @@ data Message =
 -- type SceneData = [(String, InternalModel)]
 
 
-data CameraData = CameraData
-  { cameraPos :: V3 Float
-  , cameraDir :: V3 Float
-  , cameraUp  :: V3 Float
-  }
-
 
 -- data PrimitiveType = Points | Triangles | Lines
 

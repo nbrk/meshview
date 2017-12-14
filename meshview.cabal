@@ -22,6 +22,12 @@ library
   exposed-modules:     Meshview
                      , Meshview.Types
                      , Meshview.Message
+                     , Meshview.Color
+                     , Meshview.Render
+                     , Meshview.RenderMonad
+                     , Meshview.LoadShaders
+                     , Meshview.FragmentShader
+                     , Meshview.VertexShader
                      , Meshview.GUIActor
                      , Meshview.RendererActor
                      , Meshview.SceneActor
@@ -32,10 +38,14 @@ library
   build-depends:       base >= 4.7 && < 5
                      , random
                      , mtl
+                     , containers
+                     , bytestring
                      , lens
                      , linear
+                     , raw-strings-qq
                      , GLFW-b
                      , OpenGL
+                     , OpenGLRaw
                      , nano-erl
                      , nano-erl-broadcast
   default-language:    Haskell2010

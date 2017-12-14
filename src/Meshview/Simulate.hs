@@ -18,7 +18,7 @@ simulate disp ctrl bgcol hz startw wtom stepw = do
   runNanoErl $
     spawnGroup [ actorCamera
                , actorScene
-               , actorRenderer bgcol -- (RGBA 0.2 0.2 0.3 1)
+               , actorRenderer -- (RGBA 0.2 0.2 0.3 1)
                , actorGUI disp ctrl
                , actorTimer hz startw wtom stepw
                ]

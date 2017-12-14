@@ -1,13 +1,16 @@
 module Meshview.Types where
 
 import           Control.Monad.State
+import           Data.Map
+import           Graphics.Rendering.OpenGL
+import           Linear
 
 --
 -- Synonyms
 --
 
--- | A type synonym for 3D point
-type Point = (Float, Float, Float)
+-- -- | A type synonym for 3D point
+-- type Point = (Float, Float, Float)
 
 
 --
@@ -51,22 +54,30 @@ data Color =
   -- | Grey
 
 
-type Render = State RenderState ()
+type Render = StateT RenderState IO ()
 
 data RenderState = RenderState
-  {
+  { rsProgram          :: Program
+  , rsColor            :: Color4 GLfloat
+  , rsObjectDict       :: Map String (VertexArrayObject, ObjectParam)
+  , rsViewMatrix       :: M44 Float
+  , rsProjectionMatrix :: M44 Float
   }
 
--- data Scene a = Scene
---   { runScene :: a
---   }
+data ObjectParam = ObjectParam
+  { opColor         :: Color4 GLfloat
+  , opPrimitiveMode :: PrimitiveMode
+  , opPolygonMode   :: PolygonMode
+  , opSize          :: GLsizei
+  , opModelMatrix   :: M44 Float
+  , opVisible       :: Bool
+  }
 
--- instance Functor Scene where
---   fmap f (Scene a) = Scene (f a)
 
--- instance Applicative Scene where
---   pure = Scene
---   (<*>) (Scene fab) (Scene a) = Scene (fab a)
+data CameraData = CameraData
+  { cdPos :: V3 Float
+  , cdDir :: V3 Float
+  , cdUp  :: V3 Float
+  }
 
--- instance Monad Scene where
---   (>>=) ma (\a -> mb) =
+
