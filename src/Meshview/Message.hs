@@ -11,18 +11,18 @@ data Message =
   MsgQuit
   | MsgGUIActive
   | MsgRendererActive
-  | MsgSceneData SceneData
+  | MsgSceneData Render
   | MsgRenderingDone
   | MsgCameraData CameraData
   | MsgGUIDamaged
-  | MsgUserData Model
+  | MsgUserData Render
   | MsgGUIForward -- ...
   | MsgGUIBackwards
   | MsgGUIVertAngle
 
 
 
-type SceneData = [(String, InternalModel)]
+-- type SceneData = [(String, InternalModel)]
 
 
 data CameraData = CameraData
@@ -32,12 +32,12 @@ data CameraData = CameraData
   }
 
 
-data PrimitiveType = Points | Triangles | Lines
+-- data PrimitiveType = Points | Triangles | Lines
 
-data InternalModel = InternalModel
-   { imodelVertices    :: [V3 Float]
-   , imodelPrimitive   :: PrimitiveType
-   , imodelModelMatrix :: M44 Float
-   , imodelViewMatrix  :: M44 Float
---   , imodel TODO
-   }
+-- data InternalModel = InternalModel
+--    { imodelVertices    :: [V3 Float]
+--    , imodelPrimitive   :: PrimitiveType
+--    , imodelModelMatrix :: M44 Float
+--    , imodelViewMatrix  :: M44 Float
+-- --   , imodel TODO
+--    }

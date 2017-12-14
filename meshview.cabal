@@ -22,15 +22,16 @@ library
   exposed-modules:     Meshview
                      , Meshview.Types
                      , Meshview.Message
-                     , Meshview.GUI
-                     , Meshview.Renderer
-                     , Meshview.Scene
-                     , Meshview.Camera
-                     , Meshview.Timer
-                     , Meshview.Display
+                     , Meshview.GUIActor
+                     , Meshview.RendererActor
+                     , Meshview.SceneActor
+                     , Meshview.CameraActor
+                     , Meshview.TimerActor
+--                     , Meshview.Display
                      , Meshview.Simulate
   build-depends:       base >= 4.7 && < 5
                      , random
+                     , mtl
                      , lens
                      , linear
                      , GLFW-b

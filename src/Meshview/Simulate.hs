@@ -3,15 +3,15 @@ module Meshview.Simulate where
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast
 
-import           Meshview.Camera
-import           Meshview.GUI
-import           Meshview.Renderer
-import           Meshview.Scene
-import           Meshview.Timer
+import           Meshview.CameraActor
+import           Meshview.GUIActor
+import           Meshview.RendererActor
+import           Meshview.SceneActor
+import           Meshview.TimerActor
 import           Meshview.Types
 
 
-simulate :: Display -> Controls -> Color -> Int -> w -> (w -> Model) -> (Float -> w -> w) -> IO ()
+simulate :: Display -> Controls -> Color -> Int -> w -> (w -> Render) -> (Float -> w -> w) -> IO ()
 simulate disp ctrl bgcol hz startw wtom stepw = do
   putStrLn "simulate: start"
 

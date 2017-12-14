@@ -1,4 +1,4 @@
-module Meshview.Camera where
+module Meshview.CameraActor where
 
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast

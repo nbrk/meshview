@@ -1,6 +1,6 @@
 module Main where
 
-import           Meshview.Display
+--import           Meshview.Display
 import           Meshview.Simulate
 import           Meshview.Types
 
@@ -10,8 +10,8 @@ import           Meshview.Types
 data World = World Float
 
 
-worldToModel :: World -> Model
-worldToModel (World _) = Models [] -- XXX
+worldToRender :: World -> Render
+worldToRender (World _) = dummyRender
 
 
 stepWorld :: Float -> World -> World
@@ -23,7 +23,11 @@ main = do
   let disp = InWindow (640, 480) (0, 0)
   let ctrl = WithoutMouse
   let bgcol = RGBA 0.2 0.2 0.3 1
-  let model = Model "la" (Points [])
 
 --  display disp ctrl bgcol model
-  simulate disp ctrl bgcol 1 (World 100) worldToModel stepWorld
+  simulate disp ctrl bgcol 1 (World 100) worldToRender stepWorld
+
+
+dummyRender :: Render
+dummyRender = do
+  return ()

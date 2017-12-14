@@ -1,4 +1,4 @@
-module Meshview.Scene where
+module Meshview.SceneActor where
 
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast
@@ -15,12 +15,12 @@ actorScene gref mypid = forever $
       MsgQuit -> do
         putStrLn "actorScene: got MsgQuit, suicide"
         kill mypid
-      MsgRendererActive -> do
-        putStrLn "actorScene: got MsgRendererActive"
-        gref !* MsgSceneData []
-      MsgUserData model -> do
-        putStrLn "actorScene: got MsgUserData"
-        gref !* MsgSceneData []
+      MsgUserData r -> do
+        putStrLn "actorScene: got MsgUserData with Render"
+        gref !* MsgSceneData r
+      -- MsgRendererActive -> do
+      --   putStrLn "actorScene: got MsgRendererActive"
+      --   gref !* MsgSceneData []
       _ -> return ()
 
 

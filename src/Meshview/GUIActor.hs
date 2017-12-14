@@ -1,4 +1,4 @@
-module Meshview.GUI where
+module Meshview.GUIActor where
 
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast

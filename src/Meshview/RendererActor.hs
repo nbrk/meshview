@@ -1,4 +1,4 @@
-module Meshview.Renderer where
+module Meshview.RendererActor where
 
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast
@@ -19,8 +19,8 @@ actorRenderer bgcol gref mypid = forever $
       MsgGUIActive -> do
         putStrLn "actorRenderer: got MsgGUIActive"
         gref !* MsgRendererActive
-      MsgSceneData sd -> do
-        putStrLn "actorRenderer: got MsgSceneData"
+      MsgSceneData r -> do
+        putStrLn "actorRenderer: got MsgSceneData with Render"
         let (RGBA r g b a) = bgcol
         GL.clearColor GL.$= GL.Color4 r g b a
         GL.clear [GL.ColorBuffer]

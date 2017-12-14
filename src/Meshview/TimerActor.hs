@@ -1,4 +1,4 @@
-module Meshview.Timer where
+module Meshview.TimerActor where
 
 import           Control.Concurrent
 import           Control.Concurrent.NanoErl
@@ -11,7 +11,7 @@ import           Meshview.Types
 
 
 
-actorTimer :: Int -> w -> (w -> Model) -> (Float -> w -> w) -> GroupProcess Message
+actorTimer :: Int -> w -> (w -> Render) -> (Float -> w -> w) -> GroupProcess Message
 actorTimer hz startw wtom stepw gref mypid = do
   (subgref, spid:_) <- spawnGroup [actorTimerShooter hz startw wtom stepw]
   mergeGroups [gref, subgref]
@@ -28,16 +28,17 @@ actorTimer hz startw wtom stepw gref mypid = do
 
 
 
-actorTimerShooter :: Int -> w -> (w -> Model) -> (Float -> w -> w) -> GroupProcess Message
+actorTimerShooter :: Int -> w -> (w -> Render) -> (Float -> w -> w) -> GroupProcess Message
 actorTimerShooter hz startw wtom stepw gref mypid = do
-  -- bcast initial model (before stepw)
+  -- bcast initial render (before stepw)
   let startm = wtom startw
   gref !* MsgUserData startm
 
+  -- generate render from the world (updating it) hz times per sec
   loop 1 hz startw wtom stepw gref mypid
 
 
-loop :: Int -> Int -> w -> (w -> Model) -> (Float -> w -> w) -> GroupProcess Message
+loop :: Int -> Int -> w -> (w -> Render) -> (Float -> w -> w) -> GroupProcess Message
 loop nstep hz curw wtom stepw gref mypid = do
     threadDelay $ truncate (1000000 / fromIntegral hz)
     let neww = stepw (fromIntegral nstep / fromIntegral hz) curw
