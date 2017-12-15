@@ -1,5 +1,6 @@
 module Meshview.GUIActor where
 
+import           Control.Concurrent
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast
 import           Control.Lens
@@ -50,14 +51,14 @@ initWindow disp = do
     GLFW.terminate
     error "Can't create GLFW window"
 
+  GLFW.makeContextCurrent w -- XXX
+
   return (fromJust w)
 
 
 -- | Actor that swaps back and front buffers when the rendering is done
 actorGUISwapper :: GLFW.Window -> GroupProcess Message
-actorGUISwapper w gref mypid = do
-  GLFW.makeContextCurrent (Just w) -- XXX
-
+actorGUISwapper w gref mypid =
   forever $
     mypid `receive`
       \msg -> case msg of
@@ -80,6 +81,9 @@ actorGUIPoller w ctrl gref mypid = do
   GLFW.setWindowRefreshCallback w $ Just (windowRefreshCallback gref mypid)
   when (ctrl == WithMouse) $
     GLFW.setCursorPosCallback w $ Just (cursorPosCallback gref mypid)
+
+  -- say ok to other depending actors
+  gref !* MsgGUIActive
 
   forever GLFW.waitEvents
 

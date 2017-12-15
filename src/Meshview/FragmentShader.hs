@@ -9,10 +9,13 @@ fragmentShaderSourceString = [r|
 
 out vec4 outColor;
 
+uniform vec4 ObjectColor;
+
 void
 main()
 {
-  outColor = vec4(1.0, 0.0, 0.0, 1.0);
+//  outColor = vec4(1.0, 0.0, 0.0, 1.0);
+  outColor = ObjectColor;
 }
 |]
 

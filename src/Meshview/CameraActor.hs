@@ -24,10 +24,11 @@ actorCamera gref mypid = forever $
       MsgQuit -> do
         putStrLn "actorCamera: got MsgQuit, suicide"
         kill mypid
-      -- MsgRendererActive -> do
-      --   putStrLn "actorCamera: got MsgRendererActive"
-      --   gref !*
-      --     MsgCameraData initialCameraData
+      MsgRendererActive -> do
+        putStrLn "actorCamera: got MsgRendererActive"
+        gref !*
+          MsgCameraData initialCameraData
+
       MsgGUIForward -> do
         putStrLn "actorCamera: got MsgGUIForward"
         -- XXX
@@ -38,4 +39,5 @@ actorCamera gref mypid = forever $
         -- XXX
         gref !*
           MsgCameraData initialCameraData
+
       _ -> return ()

@@ -11,14 +11,22 @@ import           Meshview.TimerActor
 import           Meshview.Types
 
 
-simulate :: Display -> Controls -> Color -> Int -> w -> (w -> Render) -> (Float -> w -> w) -> IO ()
-simulate disp ctrl bgcol hz startw wtom stepw = do
+simulate :: Display -> Controls -> Int -> w -> (w -> Render) -> (Float -> w -> w) -> IO ()
+simulate disp ctrl hz startw wtom stepw = do
   putStrLn "simulate: start"
 
+  -- runNanoErl $
+  --   spawnGroup [ actorCamera
+  --              , actorScene
+  --              , actorRenderer -- (RGBA 0.2 0.2 0.3 1)
+  --              , actorGUI disp ctrl
+  --              , actorTimer hz startw wtom stepw
+  --              ]
   runNanoErl $
-    spawnGroup [ actorCamera
+    spawnGroup [
+               actorCamera
                , actorScene
-               , actorRenderer -- (RGBA 0.2 0.2 0.3 1)
+               , actorRenderer
                , actorGUI disp ctrl
                , actorTimer hz startw wtom stepw
                ]

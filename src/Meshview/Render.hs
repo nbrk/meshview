@@ -25,7 +25,7 @@ render rs = do
 
 renderObject :: RenderState -> (VertexArrayObject, ObjectParam) -> IO ()
 renderObject rs (vao, param) =
-  unless (opVisible param) $
+  when (opVisible param) $
   do
     bindVertexArrayObject $= Just vao
 

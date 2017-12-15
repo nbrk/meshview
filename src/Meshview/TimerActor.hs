@@ -30,7 +30,7 @@ actorTimer hz startw wtom stepw gref mypid = do
 
 actorTimerShooter :: Int -> w -> (w -> Render) -> (Float -> w -> w) -> GroupProcess Message
 actorTimerShooter hz startw wtom stepw gref mypid = do
-  -- bcast initial render (before stepw)
+  -- XXX wait for and bcast initial render (before stepw)
   let startm = wtom startw
   gref !* MsgUserData startm
 

@@ -23,23 +23,25 @@ addCustomObject :: Storable a => String -> Int -> [a] -> Color -> PrimitiveMode 
 addCustomObject n dim dat col prim poli = do
   rs <- get
 
-  -- upload the object's vertices' data used as "Position" in shaders
-  vao <- lift $ setupArrayObject (rsProgram rs) dat dim "Position"
+  unless (member n (rsObjectDict rs)) $ do
+    -- upload the object's vertices' data used as "Position" in shaders
+    vao <- lift $ setupArrayObject (rsProgram rs) dat dim "Position"
 
-  -- create the param
-  let param = ObjectParam
-        { opColor = fromColor col
-        , opPrimitiveMode = prim
-        , opPolygonMode = poli
-        , opSize = fromIntegral $ length dat
-        , opModelMatrix = identity
-        , opVisible = True
-        }
+    -- create the param
+    let param = ObjectParam
+          { opColor = fromColor col
+          , opPrimitiveMode = prim
+          , opPolygonMode = poli
+          , opSize = fromIntegral $ length dat
+          , opModelMatrix = identity
+          , opVisible = True
+          }
 
-  -- insert into the dict
-  let dict' = insert n (vao, param) (rsObjectDict rs)
+    -- insert into the dict
+    let dict' = insert n (vao, param) (rsObjectDict rs)
 
-  put rs { rsObjectDict = dict'}
+    lift $ putStrLn $ "renderer: addCustomObject " ++ n
+    put rs { rsObjectDict = dict'}
 
 
 

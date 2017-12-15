@@ -18,9 +18,9 @@ actorScene gref mypid = forever $
       MsgUserData r -> do
         putStrLn "actorScene: got MsgUserData with Render"
         gref !* MsgSceneData r
-      -- MsgRendererActive -> do
-      --   putStrLn "actorScene: got MsgRendererActive"
-      --   gref !* MsgSceneData []
+      MsgRendererActive -> do
+        putStrLn "actorScene: got MsgRendererActive"
+--        gref !* MsgSceneData []
       _ -> return ()
 
 

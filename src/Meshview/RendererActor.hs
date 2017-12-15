@@ -1,5 +1,6 @@
 module Meshview.RendererActor where
 
+import           Control.Concurrent
 import           Control.Concurrent.NanoErl
 import           Control.Concurrent.NanoErl.Broadcast
 import           Control.Monad
@@ -38,8 +39,13 @@ initialRenderState = do
 actorRenderer :: GroupProcess Message
 actorRenderer gref mypid = do
   -- init shaders, matrices, etc.
+  putStrLn "actorRenderer: enter"
+--  threadDelay 100000
   rs <- initialRenderState
+  putStrLn "actorRenderer: initial rs created"
+
   loop rs gref mypid
+  putStrLn "actorRenderer: loop fallthrough"
 
 
 loop :: RenderState -> GroupProcess Message
@@ -51,6 +57,7 @@ loop rs gref mypid =
         kill mypid
       MsgGUIActive -> do
         putStrLn "actorRenderer: got MsgGUIActive"
+        render rs -- XXX
         gref !* MsgRendererActive
         loop rs gref mypid
       MsgSceneData r -> do
@@ -59,14 +66,12 @@ loop rs gref mypid =
         render rs'
         gref !* MsgRenderingDone
         loop rs' gref mypid
-      -- MsgCameraData cd -> do
-      --   putStrLn "actorRenderer: got MsgCameraData"
-      --   let (RGBA r g b a) = bgcol
-      --   GL.clearColor GL.$= GL.Color4 r g b a
-      --   GL.clear [GL.ColorBuffer]
-      --   -- XXX render
-      --   GL.flush
-      --   gref !* MsgRenderingDone
+      MsgCameraData cd -> do
+        putStrLn "actorRenderer: got MsgCameraData"
+        -- XXX render
+        render rs -- XXX
+        gref !* MsgRenderingDone
+        loop rs gref mypid
       MsgGUIDamaged -> do
         putStrLn "actorRenderer: got MsgGUIDamaged"
         render rs
