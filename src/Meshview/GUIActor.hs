@@ -91,6 +91,8 @@ actorGUIPoller w ctrl gref mypid = do
 keyCallback :: GroupRef Message -> Pid Message -> GLFW.KeyCallback
 keyCallback gref mypid w key scancode action mods =
   -- still executing in actorGUIPoller's thread
+  when (action == GLFW.KeyState'Pressed || action == GLFW.KeyState'Repeating) $
+
   case key of
     GLFW.Key'W -> do
       putStrLn' "keyCallback: will send MsgGUIForward"

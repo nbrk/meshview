@@ -12,7 +12,7 @@ import           Meshview.Types
 initialCameraState =
   CameraState
   { csPos = V3 0 0 10
-  , csDir = V3 0 0 (-0.1)
+  , csDir = V3 0 0 (-0.5)
   , csUp = V3 0 1 0
   }
 

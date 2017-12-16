@@ -42,10 +42,11 @@ actorRenderer :: GroupProcess Message
 actorRenderer gref mypid = do
   -- init shaders, matrices, etc.
   putStrLn' "actorRenderer: enter"
---  threadDelay 100000
+  -- wait for GUI, etc.
+  threadDelay 1000000
   rs <- initialRenderState
   let rs' = setMatricesFromCamera initialCameraState rs
---  putStrLn' "actorRenderer: initial rs created"
+  putStrLn' "actorRenderer: initial rs created"
 
   loop rs' gref mypid
   putStrLn' "actorRenderer: loop fallthrough"

@@ -55,5 +55,5 @@ data CameraState = CameraState
 
 
 --- XXX
-debug = True
+debug = False
 putStrLn' s = when debug (putStrLn s)
