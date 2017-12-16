@@ -20,6 +20,7 @@ display disp ctrl r = do
                , actorRenderer
                , actorGUI disp ctrl
                , actorUntimer r -- static Render broadcaster
+               , actorTimerFPSShooter 25
                ]
 
   return ()

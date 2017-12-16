@@ -46,10 +46,9 @@ loop nstep hz curw wtom stepw gref mypid = do
     loop (nstep + 1) hz neww wtom stepw gref mypid
 
 
----
+-- | Actor that bcasts the Render once and then dies
 actorUntimer :: Render -> GroupProcess Message
 actorUntimer r gref mypid =
-  --addToGroup subgref
   forever $
     mypid `receive`
       \msg -> case msg of
@@ -61,3 +60,23 @@ actorUntimer r gref mypid =
           gref !* MsgUserData r
           kill mypid
         _                -> return ()
+
+-- | A group of actors that bcast swap-buffer events fps times per sec
+actorFPSTimer :: Int -> GroupProcess Message
+actorFPSTimer fps gref mypid = do
+  (subgref, spid:_) <- spawnGroup [actorTimerFPSShooter fps]
+  mergeGroups [gref, subgref]
+
+  forever $
+    mypid `receive`
+      \msg -> case msg of
+        MsgQuit -> do
+          putStrLn' "actorFPSTimer: got MsgQuit (and kill actorTimerFPSShooter)"
+          kill spid
+          kill mypid
+        _                -> return ()
+
+actorTimerFPSShooter :: Int -> GroupProcess Message
+actorTimerFPSShooter fps gref mypid = forever $ do
+  threadDelay $ truncate (1000000 / fromIntegral fps)
+  gref !* MsgRenderingRequest

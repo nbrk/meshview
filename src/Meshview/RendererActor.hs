@@ -61,23 +61,22 @@ loop rs gref mypid =
         kill mypid
       MsgGUIActive -> do
         putStrLn' "actorRenderer: got MsgGUIActive"
-        render rs -- XXX
+        render rs -- XXX only black screen while waiting for first data
         gref !* MsgRendererActive
         loop rs gref mypid
       MsgSceneData r -> do
         putStrLn' "actorRenderer: got MsgSceneData with Render"
         rs' <- execRender r rs
-        render rs'
-        gref !* MsgRenderingDone
         loop rs' gref mypid
       MsgCameraData cs -> do
         putStrLn' "actorRenderer: got MsgCameraData"
         let rs' = setMatricesFromCamera cs rs
-        render rs' -- XXX
-        gref !* MsgRenderingDone
         loop rs' gref mypid
       MsgGUIDamaged -> do
         putStrLn' "actorRenderer: got MsgGUIDamaged"
+        loop rs gref mypid
+      MsgRenderingRequest -> do
+        putStrLn' "actorRenderer: got MsgRenderingRequest"
         render rs
         gref !* MsgRenderingDone
         loop rs gref mypid
@@ -88,7 +87,7 @@ setMatricesFromCamera :: CameraState -> RenderState -> RenderState
 setMatricesFromCamera cs rs =
   let pm = perspective
            (45 * (pi / 180))
-           (800/600) --(4 / 3)
+           (4 / 3)
            0.1
            100000
       vm = lookAt

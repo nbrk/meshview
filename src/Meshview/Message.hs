@@ -13,6 +13,7 @@ data Message =
   | MsgRendererActive
   | MsgSceneData Render
   | MsgRenderingDone
+  | MsgRenderingRequest
   | MsgCameraData CameraState
   | MsgGUIDamaged
   | MsgUserData Render
