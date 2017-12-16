@@ -13,25 +13,11 @@ data Message =
   | MsgRendererActive
   | MsgSceneData Render
   | MsgRenderingDone
-  | MsgCameraData CameraData
+  | MsgCameraData CameraState
   | MsgGUIDamaged
   | MsgUserData Render
+  -- GUI input
   | MsgGUIForward -- ...
   | MsgGUIBackwards
   | MsgGUIVertAngle
 
-
-
--- type SceneData = [(String, InternalModel)]
-
-
-
--- data PrimitiveType = Points | Triangles | Lines
-
--- data InternalModel = InternalModel
---    { imodelVertices    :: [V3 Float]
---    , imodelPrimitive   :: PrimitiveType
---    , imodelModelMatrix :: M44 Float
---    , imodelViewMatrix  :: M44 Float
--- --   , imodel TODO
---    }

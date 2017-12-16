@@ -63,11 +63,11 @@ actorGUISwapper w gref mypid =
     mypid `receive`
       \msg -> case msg of
         MsgQuit -> do
-          putStrLn "actorGUISwapper: got MsgQuit"
+          putStrLn' "actorGUISwapper: got MsgQuit"
           GLFW.terminate
           kill mypid
         MsgRenderingDone -> do
-          putStrLn "actorGUISwapper: got MsgRenderingDone"
+          putStrLn' "actorGUISwapper: got MsgRenderingDone"
           GLFW.swapBuffers w
         _                -> return ()
 
@@ -93,22 +93,22 @@ keyCallback gref mypid w key scancode action mods =
   -- still executing in actorGUIPoller's thread
   case key of
     GLFW.Key'W -> do
-      putStrLn "keyCallback: will send MsgGUIForward"
+      putStrLn' "keyCallback: will send MsgGUIForward"
       gref !* MsgGUIForward
     GLFW.Key'S -> do
-      putStrLn "keyCallback: will send MsgGUIBackwards"
+      putStrLn' "keyCallback: will send MsgGUIBackwards"
       gref !* MsgGUIBackwards
     GLFW.Key'Q -> do
-      putStrLn "actorGUIPoller: broadcasting MsgQuit"
+      putStrLn' "actorGUIPoller: broadcasting MsgQuit"
       gref !* MsgQuit
       kill mypid
-    _-> putStrLn "keyCallback: noop key"
+    _-> putStrLn' "keyCallback: noop key"
 
 
 windowCloseCallback :: GroupRef Message -> Pid Message -> GLFW.WindowCloseCallback
 windowCloseCallback gref mypid w = do
   -- XXX race with the final close key in wm?
-  putStrLn  "windowCloseCallback: will MsgQuit and suicide"
+  putStrLn'  "windowCloseCallback: will MsgQuit and suicide"
   gref !* MsgQuit
   kill mypid
 
@@ -121,5 +121,5 @@ cursorPosCallback gref mypid w posx posy = do
 windowRefreshCallback :: GroupRef Message -> Pid Message -> GLFW.WindowRefreshCallback
 windowRefreshCallback gref mypid w = do
   -- ask renderer to redraw when the window is damaged
-  putStrLn "windowRefreshCallback"
+  putStrLn' "windowRefreshCallback"
   gref !* MsgGUIDamaged

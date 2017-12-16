@@ -13,13 +13,13 @@ actorScene gref mypid = forever $
   mypid `receive`
     \msg -> case msg of
       MsgQuit -> do
-        putStrLn "actorScene: got MsgQuit, suicide"
+        putStrLn' "actorScene: got MsgQuit, suicide"
         kill mypid
       MsgUserData r -> do
-        putStrLn "actorScene: got MsgUserData with Render"
+        putStrLn' "actorScene: got MsgUserData with Render"
         gref !* MsgSceneData r
       MsgRendererActive -> do
-        putStrLn "actorScene: got MsgRendererActive"
+        putStrLn' "actorScene: got MsgRendererActive"
 --        gref !* MsgSceneData []
       _ -> return ()
 

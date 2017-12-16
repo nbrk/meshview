@@ -8,6 +8,7 @@ module Meshview
   ) where
 
 import           Meshview.Color            as X
+import           Meshview.Display          as X
 import           Meshview.RenderMonad      as X
 import           Meshview.Simulate         as X
 import           Meshview.Types            as X

@@ -33,7 +33,7 @@ library
                      , Meshview.SceneActor
                      , Meshview.CameraActor
                      , Meshview.TimerActor
---                     , Meshview.Display
+                     , Meshview.Display
                      , Meshview.Simulate
   build-depends:       base >= 4.7 && < 5
                      , random

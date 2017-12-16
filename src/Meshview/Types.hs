@@ -47,10 +47,13 @@ data ObjectParam = ObjectParam
   }
 
 
-data CameraData = CameraData
-  { cdPos :: V3 Float
-  , cdDir :: V3 Float
-  , cdUp  :: V3 Float
-  }
+data CameraState = CameraState
+  { csPos :: V3 Float
+  , csDir :: V3 Float
+  , csUp  :: V3 Float
+  } deriving Show
 
 
+--- XXX
+debug = True
+putStrLn' s = when debug (putStrLn s)

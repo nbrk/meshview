@@ -21,7 +21,7 @@ actorTimer hz startw wtom stepw gref mypid = do
     mypid `receive`
       \msg -> case msg of
         MsgQuit -> do
-          putStrLn "actorTimer: got MsgQuit (and kill actorTimerShooter)"
+          putStrLn' "actorTimer: got MsgQuit (and kill actorTimerShooter)"
           kill spid
           kill mypid
         _                -> return ()
@@ -44,3 +44,20 @@ loop nstep hz curw wtom stepw gref mypid = do
     let neww = stepw (fromIntegral nstep / fromIntegral hz) curw
     gref !* MsgUserData (wtom neww)
     loop (nstep + 1) hz neww wtom stepw gref mypid
+
+
+---
+actorUntimer :: Render -> GroupProcess Message
+actorUntimer r gref mypid =
+  --addToGroup subgref
+  forever $
+    mypid `receive`
+      \msg -> case msg of
+        MsgQuit -> do
+          putStrLn' "actorUntimer: got MsgQuit"
+          kill mypid
+        MsgRendererActive -> do
+          putStrLn' "actorUntimer: got MsgRendererActive, bcast the Render and die"
+          gref !* MsgUserData r
+          kill mypid
+        _                -> return ()

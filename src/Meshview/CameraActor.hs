@@ -9,35 +9,56 @@ import           Meshview.Message
 import           Meshview.Types
 
 
-initialCameraData =
-  CameraData
-  { cdPos = V3 0 0 1
-  , cdDir = V3 0 0 0
-  , cdUp = V3 0 1 0
+initialCameraState =
+  CameraState
+  { csPos = V3 0 0 10
+  , csDir = V3 0 0 (-0.1)
+  , csUp = V3 0 1 0
   }
 
 
 actorCamera :: GroupProcess Message
-actorCamera gref mypid = forever $
+actorCamera = loop initialCameraState
+
+loop :: CameraState -> GroupProcess Message
+loop cs gref mypid =
   mypid `receive`
     \msg -> case msg of
       MsgQuit -> do
-        putStrLn "actorCamera: got MsgQuit, suicide"
+        putStrLn' "actorCamera: got MsgQuit, suicide"
         kill mypid
-      MsgRendererActive -> do
-        putStrLn "actorCamera: got MsgRendererActive"
-        gref !*
-          MsgCameraData initialCameraData
+      -- MsgRendererActive -> do
+      --   putStrLn' "actorCamera: got MsgRendererActive (bcast initial cs)"
+      --   gref !* MsgCameraData cs
+      --   loop cs gref mypid
 
       MsgGUIForward -> do
-        putStrLn "actorCamera: got MsgGUIForward"
-        -- XXX
-        gref !*
-          MsgCameraData initialCameraData
-      MsgGUIVertAngle -> do
-        putStrLn "actorCamera: got MsgGUIVertAngle"
-        -- XXX
-        gref !*
-          MsgCameraData initialCameraData
+        putStrLn' "actorCamera: got MsgGUIForward"
+        -- XXX change cs
+        let cs' = forward cs
+        putStrLn' $ "actorCamera: MsgCameraData: " ++ show cs'
+        gref !* MsgCameraData cs'
+        loop cs' gref mypid
+      MsgGUIBackwards -> do
+        putStrLn' "actorCamera: got MsgGUIBackwards"
+        -- XXX change cs
+        let cs' = backwards cs
+        gref !* MsgCameraData cs'
+        loop cs' gref mypid
+      -- MsgGUIVertAngle -> do
+      --   putStrLn' "actorCamera: got MsgGUIVertAngle"
+      --   -- XXX change cs
+      --   gref !* MsgCameraData cs
+      --   loop cs gref mypid
 
-      _ -> return ()
+      _ -> loop cs gref mypid
+
+
+forward :: CameraState -> CameraState
+forward cs =
+  cs { csPos = csPos cs ^+^ csDir cs}
+
+
+backwards :: CameraState -> CameraState
+backwards cs =
+  cs { csPos = csPos cs ^-^ csDir cs}
