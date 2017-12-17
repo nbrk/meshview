@@ -43,8 +43,8 @@ stepWorld nsec (World i) = World nsec
 
 main :: IO ()
 main = do
---  let disp = InWindow (800, 600) (0, 0)
-  let disp = FullScreen (1600, 900)
+--  let disp = InWindow (1024, 768) (0, 0)
+  let disp = FullScreen (1024, 768)
 --  let ctrl = WithoutMouse
   let ctrl = WithMouse
 

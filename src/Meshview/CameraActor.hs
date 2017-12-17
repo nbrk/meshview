@@ -13,9 +13,9 @@ import           Meshview.Types
 initialCameraState =
   CameraState
   { csPos = V3 0 0 3
-  , csDir = V3 0 0 (-0.01)
+  , csDir = V3 0 0 (-1)
   , csUp = V3 0 1 0
---  , csRight = V3 1 0 0
+  , csRight = V3 1 0 0
   }
 
 
@@ -86,41 +86,41 @@ loop cs gref mypid =
 
 forward :: CameraState -> CameraState
 forward cs =
-  cs { csPos = csPos cs ^+^ csDir cs}
+  cs { csPos = csPos cs ^+^ (csDir cs) ^* 0.01 }
 
 
 backwards :: CameraState -> CameraState
 backwards cs =
-  cs { csPos = csPos cs ^-^ csDir cs}
+  cs { csPos = csPos cs ^-^ (csDir cs) ^* 0.01}
 
 
 left :: CameraState -> CameraState
 left cs =
-    cs { csPos = csPos cs ^-^ V3 0.01 0 0}
+    cs { csPos = csPos cs ^-^ (csRight cs) ^* 0.01}
 
 right :: CameraState -> CameraState
 right cs =
-    cs { csPos = csPos cs ^+^ V3 0.01 0 0}
+    cs { csPos = csPos cs ^+^ (csRight cs) ^* 0.01}
 
 
 up :: CameraState -> CameraState
 up cs =
-    cs { csPos = csPos cs ^+^ V3 0 0.01 0}
+    cs { csPos = csPos cs ^+^ (csUp cs) ^* 0.01}
 
 down :: CameraState -> CameraState
 down cs =
-    cs { csPos = csPos cs ^-^ V3 0 0.01 0}
+    cs { csPos = csPos cs ^-^ (csUp cs) ^* 0.01}
 
 
 turnLeft :: CameraState -> CameraState
 turnLeft cs =
-  let q = axisAngle (V3 0 1 0) (0.0001 * (180 / pi))
+  let q = axisAngle (V3 0 1 0) (1 * (pi / 180))
   in
     cs { csDir = rotate q (csDir cs) }
 
 turnRight :: CameraState -> CameraState
 turnRight cs =
-  let q = axisAngle (V3 0 (-1) 0) (0.0001 * (180 / pi))
+  let q = axisAngle (V3 0 (-1) 0) (1 * (pi / 180))
   in
     cs { csDir = rotate q (csDir cs) }
 
@@ -129,22 +129,15 @@ vertHorizAngles :: Float -> Float -> CameraState -> CameraState
 vertHorizAngles offx offy cs =
   let dir = csDir cs
       up = csUp cs
-      deg = 0.0001 * (180 / pi)
-      hq = axisAngle (V3 0 (-1) 0) (offx * deg)
-      vq = axisAngle (V3 (-1) 0 0) (offy * deg)
-      dir' = rotate vq (rotate hq dir)
-      up' = rotate vq (rotate hq up)
+      right = csRight cs
+      rad = 1 * (pi / 180)
+      yq = axisAngle (V3 0 (-1) 0) (offx * rad)
+      xq = axisAngle (V3 (-1) 0 0) (offy * rad)
+      dir' = rotate yq (rotate xq dir)
+      up' = rotate yq (rotate xq up)
+      right' = rotate yq (rotate xq right)
   in
     cs { csDir = dir'
-       , csUp = up' }
-
-
-------
--- spherical to cartesian coords conversion
-sphericalToCartesian :: Float -> Float -> V3 Float
-sphericalToCartesian horang vertang =
-  V3
-  (cos vertang * sin horang)
-  (sin vertang)
-  (cos vertang * cos horang)
+       , csUp = up'
+       , csRight = right' }
 

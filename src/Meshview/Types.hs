@@ -48,9 +48,10 @@ data ObjectParam = ObjectParam
 
 
 data CameraState = CameraState
-  { csPos :: V3 Float
-  , csDir :: V3 Float
-  , csUp  :: V3 Float
+  { csPos   :: V3 Float
+  , csDir   :: V3 Float
+  , csUp    :: V3 Float
+  , csRight :: V3 Float
   } deriving Show
 
 

@@ -87,8 +87,7 @@ setMatricesFromCamera :: CameraState -> RenderState -> RenderState
 setMatricesFromCamera cs rs =
   let pm = perspective
            (45 * (pi / 180))
---           (4 / 3)
-           (1600 / 900)
+           (1024 / 768)
            0.1
            100000
       vm = lookAt
