@@ -16,6 +16,8 @@ initialCameraState =
   , csDir = V3 0 0 (-1)
   , csUp = V3 0 1 0
   , csRight = V3 1 0 0
+  , csVertAngle = 0
+  , csHorizAngle = pi
   }
 
 
@@ -78,6 +80,7 @@ loop cs gref mypid =
       MsgGUIVertHorizAngles offx offy -> do
         putStrLn' "actorCamera: got MsgGUIVertHorizAngles"
         let cs' = vertHorizAngles (realToFrac offx) (realToFrac offy) cs
+--        putStrLn $ "new CameraState: " ++ show cs'
         gref !* MsgCameraData cs'
         loop cs' gref mypid
 
@@ -125,19 +128,43 @@ turnRight cs =
     cs { csDir = rotate q (csDir cs) }
 
 
+-- XXX
+-- vertHorizAngles' :: Float -> Float -> CameraState -> CameraState
+-- vertHorizAngles' offx offy cs =
+--   let dir = csDir cs
+--       up = csUp cs
+--       right = csRight cs
+--       vert = csVertAngle cs + offy
+--       horiz = csHorizAngle cs + offx
+--       dir' = dir' ^+^ V3 (cos vert * sin horiz) (sin vert) (cos vert * cos horiz)
+--       right' = right ^+^ V3 (sin (horiz - pi / 2)) 0 (cos (horiz - pi / 2))
+--       up' = up ^+^ cross right' dir'
+--   in
+--     cs { csDir = dir'
+--        , csUp = up'
+--        , csRight = right'
+--        , csVertAngle = fromIntegral $ (truncate vert) `mod` 360
+--        , csHorizAngle = fromIntegral $ (truncate horiz) `mod` 360}
+
+
 vertHorizAngles :: Float -> Float -> CameraState -> CameraState
 vertHorizAngles offx offy cs =
   let dir = csDir cs
       up = csUp cs
       right = csRight cs
       rad = 1 * (pi / 180)
-      yq = axisAngle (V3 0 (-1) 0) (offx * rad)
-      xq = axisAngle (V3 (-1) 0 0) (offy * rad)
-      dir' = rotate yq (rotate xq dir)
-      up' = rotate yq (rotate xq up)
+      xq = axisAngle (V3 (1) 0 0) (offy * rad)
+      yq = axisAngle (V3 0 (1) 0) (offx * rad)
+      zq = axisAngle (V3 0 0 1 :: V3 Float) (0 :: Float)
+      q = yq * xq * zq
+      dir' = rotate q dir
+      up' = rotate q up
+--      dir' = rotate zq $ rotate yq $ rotate xq dir
+--      up' = (rotate xq up)
       right' = rotate yq (rotate xq right)
+--      right' = cross up' dir'
   in
-    cs { csDir = dir'
-       , csUp = up'
-       , csRight = right' }
+    cs { csDir = normalize dir'
+       , csUp = normalize up'
+       , csRight = normalize right' }
 

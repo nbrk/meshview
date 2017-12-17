@@ -28,17 +28,19 @@ vs' =
 
 
 worldToRender :: World -> Render
-worldToRender (World f) = do
+worldToRender (World r) = do
 --  r <- lift $ randomRIO (0, 1)
 --  addCustomObject "tri" 3 vs red Triangles Fill
-  addCustomObject "cube" 3 (cubeHeight 1) red TriangleFan Line
---  addCustomObject "line" 3 vs' blue Lines Fill
+  addCustomObject "cube" 3 (cubeHeight 1) red TriangleFan Fill
+  rotateX "cube" r
+  addCustomObject "line" 3 vs' blue Lines Fill
+  rotateX "line" (-r)
 --  addCustomObject ("cube" ++ show r) 3 (cubeHeight r) green TriangleFan Fill
-  lift $ putStrLn "worldToRender"
+--  lift $ putStrLn "worldToRender"
 
 
 stepWorld :: Float -> World -> World
-stepWorld nsec (World i) = World nsec
+stepWorld nsec (World r) = World (r + 0.0001)
 
 
 main :: IO ()
@@ -48,8 +50,8 @@ main = do
 --  let ctrl = WithoutMouse
   let ctrl = WithMouse
 
---  simulate disp ctrl 1 (World 0) worldToRender stepWorld
-  display disp ctrl (worldToRender (World 0))
+  simulate disp ctrl 48 (World 0) worldToRender stepWorld
+--  display disp ctrl (worldToRender (World 0))
 
 
 

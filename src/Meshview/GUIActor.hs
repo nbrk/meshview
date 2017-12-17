@@ -82,7 +82,8 @@ actorGUIPoller w ctrl gref mypid = do
 
   when (ctrl == WithMouse) $ do
     GLFW.setCursorInputMode w GLFW.CursorInputMode'Disabled
-    GLFW.setCursorPos w (800/2) (600/2)
+    GLFW.setCursorPos w (1024/2) (768/2)
+--    GLFW.setCursorPos w 0 0
     GLFW.setCursorPosCallback w (Just $ cursorPosCallback gref mypid)
 
   -- say ok to other depending actors
@@ -139,13 +140,13 @@ windowCloseCallback gref mypid w = do
 
 cursorPosCallback :: GroupRef Message -> Pid Message -> GLFW.CursorPosCallback
 cursorPosCallback gref mypid w posx posy = do
---  GLFW.setCursorPos w (800/2) (600/2)
-  GLFW.setCursorPos w (1600/2) (900/2)
-  putStrLn $ "cursorPosCallback: offsets " ++ show posx ++ ", " ++ show posy
-  GLFW.setCursorPos w 0 0
-  -- XXX
-  let (offx, offy) = (posx, posy)
-  gref !* MsgGUIVertHorizAngles offx offy
+  GLFW.setCursorPos w (1024/2) (768/2)
+--  putStrLn $ "cursorPosCallback: offsets " ++ show posx ++ ", " ++ show posy
+  putStrLn $ "cursorPosCallback: deltas " ++ show (1024/2 - posx) ++ ", " ++ show (768/2 - posy)
+--  GLFW.setCursorPos w 0 0
+  let (offx, offy) = ((1024 / 2) - posx, (768 / 2) - posy)
+  -- XXX mouse speed???
+  gref !* MsgGUIVertHorizAngles (offx) (offy)
 
 
 windowRefreshCallback :: GroupRef Message -> Pid Message -> GLFW.WindowRefreshCallback

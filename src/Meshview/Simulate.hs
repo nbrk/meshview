@@ -29,6 +29,7 @@ simulate disp ctrl hz startw wtom stepw = do
                , actorRenderer
                , actorGUI disp ctrl
                , actorTimer hz startw wtom stepw
+               , actorTimerFPSShooter 48
                ]
 
   putStrLn "simulate: end"

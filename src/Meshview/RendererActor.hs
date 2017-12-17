@@ -93,7 +93,8 @@ setMatricesFromCamera cs rs =
       vm = lookAt
            (csPos cs)
            (csPos cs ^+^ csDir cs)
-           (csUp cs)
+--           (csUp cs)
+           (V3 0 1 0)
   in
     rs { rsProjectionMatrix = transpose pm
        , rsViewMatrix = transpose vm
