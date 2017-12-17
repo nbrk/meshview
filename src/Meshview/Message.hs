@@ -20,5 +20,11 @@ data Message =
   -- GUI input
   | MsgGUIForward -- ...
   | MsgGUIBackwards
-  | MsgGUIVertAngle
+  | MsgGUILeft
+  | MsgGUIRight
+  | MsgGUIUp
+  | MsgGUIDown
+  | MsgGUITurnLeft
+  | MsgGUITurnRight
+  | MsgGUIVertHorizAngles Double Double
 

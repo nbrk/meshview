@@ -75,7 +75,8 @@ setupArrayObject program dat dim n = do
 
     -- transfer the data
     let size = fromIntegral (length dat * sizeOf (head dat))
-    bufferData ArrayBuffer $= (size, ptr, StaticDraw) -- XXX StaticDraw??
+--    bufferData ArrayBuffer $= (size, ptr, StaticDraw) -- XXX StaticDraw??
+    bufferData ArrayBuffer $= (size, ptr, DynamicDraw)
 
     -- point shader atname
     atloc <- get $ attribLocation program n

@@ -79,8 +79,11 @@ actorGUIPoller w ctrl gref mypid = do
   GLFW.setKeyCallback w $ Just (keyCallback gref mypid)
   GLFW.setWindowCloseCallback w $ Just (windowCloseCallback gref mypid)
   GLFW.setWindowRefreshCallback w $ Just (windowRefreshCallback gref mypid)
-  when (ctrl == WithMouse) $
-    GLFW.setCursorPosCallback w $ Just (cursorPosCallback gref mypid)
+
+  when (ctrl == WithMouse) $ do
+    GLFW.setCursorInputMode w GLFW.CursorInputMode'Disabled
+    GLFW.setCursorPos w (800/2) (600/2)
+    GLFW.setCursorPosCallback w (Just $ cursorPosCallback gref mypid)
 
   -- say ok to other depending actors
   gref !* MsgGUIActive
@@ -100,6 +103,25 @@ keyCallback gref mypid w key scancode action mods =
     GLFW.Key'S -> do
       putStrLn' "keyCallback: will send MsgGUIBackwards"
       gref !* MsgGUIBackwards
+    GLFW.Key'A -> do
+      putStrLn' "keyCallback: will send MsgGUILeft"
+      gref !* MsgGUILeft
+    GLFW.Key'D -> do
+      putStrLn' "keyCallback: will send MsgGUIRight"
+      gref !* MsgGUIRight
+    GLFW.Key'PageUp -> do
+      putStrLn' "keyCallback: will send MsgGUIUp"
+      gref !* MsgGUIUp
+    GLFW.Key'PageDown -> do
+      putStrLn' "keyCallback: will send MsgGUIDown"
+      gref !* MsgGUIDown
+    GLFW.Key'Comma -> do
+      putStrLn' "keyCallback: will send MsgGUITurnLeft"
+      gref !* MsgGUITurnLeft
+    GLFW.Key'Period -> do
+      putStrLn' "keyCallback: will send MsgGUITurnRight"
+      gref !* MsgGUITurnRight
+
     GLFW.Key'Q -> do
       putStrLn' "actorGUIPoller: broadcasting MsgQuit"
       gref !* MsgQuit
@@ -117,7 +139,13 @@ windowCloseCallback gref mypid w = do
 
 cursorPosCallback :: GroupRef Message -> Pid Message -> GLFW.CursorPosCallback
 cursorPosCallback gref mypid w posx posy = do
-  gref !* MsgGUIVertAngle
+--  GLFW.setCursorPos w (800/2) (600/2)
+  GLFW.setCursorPos w (1600/2) (900/2)
+  putStrLn $ "cursorPosCallback: offsets " ++ show posx ++ ", " ++ show posy
+  GLFW.setCursorPos w 0 0
+  -- XXX
+  let (offx, offy) = (posx, posy)
+  gref !* MsgGUIVertHorizAngles offx offy
 
 
 windowRefreshCallback :: GroupRef Message -> Pid Message -> GLFW.WindowRefreshCallback

@@ -33,7 +33,7 @@ addCustomObject n dim dat col prim poli = do
           , opPrimitiveMode = prim
           , opPolygonMode = poli
           , opSize = fromIntegral $ length dat
-          , opModelMatrix = identity
+          , opModelMatrix = transpose identity
           , opVisible = True
           }
 
