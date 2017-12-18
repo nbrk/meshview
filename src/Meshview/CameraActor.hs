@@ -83,7 +83,7 @@ loop cs gref mypid =
       MsgGUIVertHorizAngles offx offy -> do
         putStrLn' "actorCamera: got MsgGUIVertHorizAngles"
         let cs' = vertHorizAngles (realToFrac offx) (realToFrac offy) cs
-        putStrLn $ "new CameraState: accum. angles horiz/vert: "
+        putStrLn' $ "new CameraState: accum. angles horiz/vert: "
             ++ show (csHorizAngle cs') ++ ", " ++ show (csVertAngle cs')
         gref !* MsgCameraData cs'
         loop cs' gref mypid

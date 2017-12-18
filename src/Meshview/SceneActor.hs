@@ -23,6 +23,3 @@ actorScene gref mypid = forever $
 --        gref !* MsgSceneData []
       _ -> return ()
 
-
--- toInternalModel :: Model -> InternalModel
--- toInternalModel (Model n msh) = InternalModel

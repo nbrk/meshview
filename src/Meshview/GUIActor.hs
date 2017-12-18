@@ -6,6 +6,7 @@ import           Control.Concurrent.NanoErl.Broadcast
 import           Control.Lens
 import           Control.Monad
 import           Data.Maybe
+import qualified Graphics.Rendering.OpenGL            as GL
 import qualified Graphics.UI.GLFW                     as GLFW
 
 
@@ -45,7 +46,6 @@ initWindow disp = do
         InWindow size _ -> size
         FullScreen size -> size
 
-  GLFW.windowHint (GLFW.WindowHint'DepthBits 24)
   w <- uncurry GLFW.createWindow size "viewer" mon Nothing
 
   when (isNothing w) $ do
@@ -53,6 +53,8 @@ initWindow disp = do
     error "Can't create GLFW window"
 
   GLFW.makeContextCurrent w -- XXX
+  GL.depthFunc GL.$= Just GL.Less
+  GLFW.windowHint (GLFW.WindowHint'DepthBits 16)
 
   return (fromJust w)
 

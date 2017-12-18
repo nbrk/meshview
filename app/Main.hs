@@ -29,33 +29,35 @@ vs' =
 
 worldToRender :: World -> Render
 worldToRender (World r) = do
-  -- r1 <- lift $ randomRIO (0, 1)
-  -- r2 <- lift $ randomRIO (0, 1)
-  -- r3 <- lift $ randomRIO (0, 1)
+  r1 <- lift $ randomRIO (0, 1)
+  r2 <- lift $ randomRIO (0, 1)
+  r3 <- lift $ randomRIO (0, 1)
 
   line "line-x" black (-1000000, 0, 0) (1000000, 0, 0)
   line "line-y" black (0, -1000000, 0) (0, 1000000, 0)
   line "line-z" white (0, 0, -1000000) (0, 0, 1000000)
 
-  meshFromSTL "sample/cube.stl" "cube1" red Fill
+  meshFromSTL "sample/cube.stl" "cube1" red Line
   meshFromSTL "sample/cube.stl" "cube2" lime Line
   meshFromSTL "sample/cube.stl" "cube3" blue Fill
   translateX "cube1" (-10)
   translateX "cube2" (0)
   translateX "cube3" (10)
   rotate "cube1" (0, 0, r)
-  rotate "cube2" (0, r, 0)
-  -- meshFromSTL "sample/cube.stl" "cube" red Line
-  -- meshFromSTL "sample/monkey.stl" "monkey" (RGBA 1 1 0 0) Line
-  -- meshFromSTL "sample/rifle.stl" "rifle" green Line
-  -- meshFromSTL "sample/dragon.stl" "dragon" (RGBA 0 1 1 0) Line
-  -- translateX "monkey" (30)
-  -- color "monkey" (RGBA r1 r2 r3 0)
-  -- translateX "rifle" (-100)
-  -- translateX "dragon" (100)
-  -- rotateX "dragon" (90)
-  -- rotate "rifle" (90, 90, 0)
-  lift $ putStrLn $ "worldToRender: r " ++ show r
+  rotate "cube2" (r, r*6, 0)
+  meshFromSTL "sample/monkey.stl" "monkey" white Line
+  meshFromSTL "sample/rifle.stl" "rifle" magenta Fill
+  meshFromSTL "sample/dragon.stl" "dragon" (RGBA 0 1 1 0) Line
+  meshFromSTL "sample/tu134.stl" "tu134" yellow Line
+  rotate "tu134" (90, 180, 0)
+  translate "tu134" (0, -1000, (-500) - r)
+  translateX "monkey" (30)
+  color "monkey" (RGBA r1 r2 r3 0)
+  translateX "rifle" (-100)
+  translate "dragon" (60, 0, 10)
+  rotate "dragon" (90, 180, 0)
+  rotate "rifle" (90, 90, 0)
+--  lift $ putStrLn $ "worldToRender: r " ++ show r
 
 
 stepWorld :: Float -> World -> World
