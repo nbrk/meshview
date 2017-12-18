@@ -44,7 +44,7 @@ mesh n dim dat col prim poly = do
     -- insert into the dict
     let dict' = insert n (vao, param) (rsObjectDict rs)
 
-    lift $ putStrLn $ "renderer: new mesh `" ++ n ++ "`"
+    lift $ putStrLn $ "renderer: new mesh `" ++ n ++ "` (" ++ show (opSize param) ++ ")"
     put rs { rsObjectDict = dict'}
 
 
@@ -59,9 +59,9 @@ rotateTranslateXYZ n mbr mbt = do
       let q =  case mbr of
                  Just (rx,ry,rz) ->
                    -- XXX make rotation quaternions
-                   let qx = axisAngle (V3 1 0 0) (rx * (180 / pi))
-                       qy = axisAngle (V3 0 1 0) (ry * (180 / pi))
-                       qz = axisAngle (V3 0 0 1) (rz * (180 / pi))
+                   let qx = axisAngle (V3 1 0 0) (rx * (pi / 180))
+                       qy = axisAngle (V3 0 1 0) (ry * (pi / 180))
+                       qz = axisAngle (V3 0 0 1) (rz * (pi / 180))
                    in
                      qx * qy * qz
                  Nothing ->
@@ -93,6 +93,18 @@ translateX n t = translate n (t, 0, 0)
 translateY n t = translate n (0, t, 0)
 translateZ n t = translate n (0, 0, t)
 
+
+-- | Set the object's colour
+color :: String -> Color -> Render
+color n col = do
+  rs <- get
+
+  case lookup n (rsObjectDict rs) of
+    Just (vao, param) -> do
+      -- update the dict
+      let dict' = adjust (\(v,p) -> (v, p {opColor = fromColor col})) n (rsObjectDict rs)
+      put rs { rsObjectDict = dict'}
+    Nothing -> return ()
 
 ----------------------
 

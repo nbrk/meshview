@@ -45,6 +45,7 @@ initWindow disp = do
         InWindow size _ -> size
         FullScreen size -> size
 
+  GLFW.windowHint (GLFW.WindowHint'DepthBits 24)
   w <- uncurry GLFW.createWindow size "viewer" mon Nothing
 
   when (isNothing w) $ do

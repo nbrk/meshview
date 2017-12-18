@@ -29,32 +29,37 @@ vs' =
 
 worldToRender :: World -> Render
 worldToRender (World r) = do
-  line "line-x" white (-1000000, 0, 0) (1000000, 0, 0)
-  line "line-y" white (0, -1000000, 0) (0, 1000000, 0)
+  -- r1 <- lift $ randomRIO (0, 1)
+  -- r2 <- lift $ randomRIO (0, 1)
+  -- r3 <- lift $ randomRIO (0, 1)
+
+  line "line-x" black (-1000000, 0, 0) (1000000, 0, 0)
+  line "line-y" black (0, -1000000, 0) (0, 1000000, 0)
   line "line-z" white (0, 0, -1000000) (0, 0, 1000000)
 
-  meshFromSTL "sample/cube.stl" "cube1" red Line
-  meshFromSTL "sample/cube.stl" "cube2" green Line
-  meshFromSTL "sample/cube.stl" "cube3" blue Line
+  meshFromSTL "sample/cube.stl" "cube1" red Fill
+  meshFromSTL "sample/cube.stl" "cube2" lime Line
+  meshFromSTL "sample/cube.stl" "cube3" blue Fill
   translateX "cube1" (-10)
   translateX "cube2" (0)
   translateX "cube3" (10)
   rotate "cube1" (0, 0, r)
   rotate "cube2" (0, r, 0)
-  rotate "cube3" (r, 0, 0)
   -- meshFromSTL "sample/cube.stl" "cube" red Line
-  -- meshFromSTL "sample/monkey.stl" "monkey" green Line
+  -- meshFromSTL "sample/monkey.stl" "monkey" (RGBA 1 1 0 0) Line
   -- meshFromSTL "sample/rifle.stl" "rifle" green Line
-  -- meshFromSTL "sample/dragon.stl" "dragon" green Line
-  -- translateX "cube" (-10)
-  -- translateX "monkey" (0)
-  -- translateX "rigle" (10)
-  -- translateX "dragon" (30)
---  lift $ putStrLn "worldToRender"
+  -- meshFromSTL "sample/dragon.stl" "dragon" (RGBA 0 1 1 0) Line
+  -- translateX "monkey" (30)
+  -- color "monkey" (RGBA r1 r2 r3 0)
+  -- translateX "rifle" (-100)
+  -- translateX "dragon" (100)
+  -- rotateX "dragon" (90)
+  -- rotate "rifle" (90, 90, 0)
+  lift $ putStrLn $ "worldToRender: r " ++ show r
 
 
 stepWorld :: Float -> World -> World
-stepWorld nsec (World r) = World (r + 0.001)
+stepWorld nsec (World r) = World (r + 1)
 
 
 main :: IO ()
@@ -69,43 +74,3 @@ main = do
 
 
 
-cubeHeight :: Float -> [Vertex3 Float]
-cubeHeight h =
-  [
-    Vertex3 (-h/2) (-h/2) (-h/2)
-  , Vertex3 (-h/2) (-h/2)  (h/2)
-  , Vertex3 (-h/2)  (h/2)  (h/2)
-  , Vertex3 (h/2)  (h/2) (-h/2)
-  , Vertex3 (-h/2) (-h/2) (-h/2)
-  , Vertex3 (-h/2)  (h/2) (-h/2)
-  , Vertex3 (h/2) (-h/2)  (h/2)
-  , Vertex3 (-h/2) (-h/2) (-h/2)
-  , Vertex3 (h/2) (-h/2) (-h/2)
-  , Vertex3 (h/2)  (h/2) (-h/2)
-  , Vertex3 (h/2) (-h/2) (-h/2)
-  , Vertex3 (-h/2) (-h/2) (-h/2)
-  , Vertex3 (-h/2) (-h/2) (-h/2)
-  , Vertex3 (-h/2)  (h/2)  (h/2)
-  , Vertex3 (-h/2)  (h/2) (-h/2)
-  , Vertex3 (h/2) (-h/2)  (h/2)
-  , Vertex3 (-h/2) (-h/2)  (h/2)
-  , Vertex3 (-h/2) (-h/2) (-h/2)
-  , Vertex3 (-h/2)  (h/2)  (h/2)
-  , Vertex3 (-h/2) (-h/2)  (h/2)
-  , Vertex3 (h/2) (-h/2)  (h/2)
-  , Vertex3 (h/2)  (h/2)  (h/2)
-  , Vertex3 (h/2) (-h/2) (-h/2)
-  , Vertex3 (h/2)  (h/2) (-h/2)
-  , Vertex3 (h/2) (-h/2) (-h/2)
-  , Vertex3 (h/2)  (h/2)  (h/2)
-  , Vertex3 (h/2) (-h/2)  (h/2)
-  , Vertex3 (h/2)  (h/2)  (h/2)
-  , Vertex3 (h/2)  (h/2) (-h/2)
-  , Vertex3 (-h/2)  (h/2) (-h/2)
-  , Vertex3 (h/2)  (h/2)  (h/2)
-  , Vertex3 (-h/2)  (h/2) (-h/2)
-  , Vertex3 (-h/2)  (h/2)  (h/2)
-  , Vertex3 (h/2)  (h/2)  (h/2)
-  , Vertex3 (-h/2)  (h/2)  (h/2)
-  , Vertex3 (h/2) (-h/2)  (h/2)
-  ]
