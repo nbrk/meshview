@@ -142,8 +142,7 @@ cursorPosCallback :: GroupRef Message -> Pid Message -> GLFW.CursorPosCallback
 cursorPosCallback gref mypid w posx posy = do
   GLFW.setCursorPos w (1024/2) (768/2)
 --  putStrLn $ "cursorPosCallback: offsets " ++ show posx ++ ", " ++ show posy
-  putStrLn $ "cursorPosCallback: deltas " ++ show (1024/2 - posx) ++ ", " ++ show (768/2 - posy)
---  GLFW.setCursorPos w 0 0
+--  putStrLn $ "cursorPosCallback: deltas " ++ show (1024/2 - posx) ++ ", " ++ show (768/2 - posy)
   let (offx, offy) = ((1024 / 2) - posx, (768 / 2) - posy)
   -- XXX mouse speed???
   gref !* MsgGUIVertHorizAngles (offx) (offy)

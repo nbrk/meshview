@@ -25,6 +25,8 @@ library
                      , Meshview.Color
                      , Meshview.Render
                      , Meshview.RenderMonad
+                     , Meshview.MeshSTL
+                     , Meshview.MeshOBJ
                      , Meshview.LoadShaders
                      , Meshview.FragmentShader
                      , Meshview.VertexShader
@@ -40,9 +42,13 @@ library
                      , mtl
                      , containers
                      , bytestring
+                     , cereal
                      , lens
                      , linear
                      , raw-strings-qq
+                     , STL
+                     , wavefront
+                     , vector
                      , GLFW-b
                      , OpenGL
                      , OpenGLRaw

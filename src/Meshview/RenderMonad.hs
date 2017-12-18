@@ -23,7 +23,7 @@ execRender = execStateT
 
 -- | Add an object with custom mesh and params (noop if the name already exists)
 mesh :: Storable a => String -> Int -> [a] -> Color -> PrimitiveMode -> PolygonMode -> Render
-mesh n dim dat col prim poli = do
+mesh n dim dat col prim poly = do
   rs <- get
 
   unless (member n (rsObjectDict rs)) $ do
@@ -34,7 +34,7 @@ mesh n dim dat col prim poli = do
     let param = ObjectParam
           { opColor = fromColor col
           , opPrimitiveMode = prim
-          , opPolygonMode = poli
+          , opPolygonMode = poly
           , opSize = fromIntegral $ length dat
           , opTranslationVector = V3 0 0 0
           , opRotationQ = axisAngle (V3 0 0 0) 0
@@ -46,6 +46,7 @@ mesh n dim dat col prim poli = do
 
     lift $ putStrLn $ "renderer: new mesh `" ++ n ++ "`"
     put rs { rsObjectDict = dict'}
+
 
 
 -- | Rotate and translate an object (if any). The x y z angles are in degrees
@@ -78,11 +79,13 @@ rotateTranslateXYZ n mbr mbt = do
     -- noop if there is no such an object
     Nothing -> return ()
 
+
 -- | Set the object's rotation (x, y, z angles in degrees)
 rotate n (rx,ry,rz) = rotateTranslateXYZ n (Just (rx, ry, rz)) Nothing
 rotateX n r = rotate n (r, 0, 0)
 rotateY n r = rotate n (0, r, 0)
 rotateZ n r = rotate n (0, 0, r)
+
 
 -- | Translate the object wrt its center
 translate n (tx, ty, tz) = rotateTranslateXYZ n Nothing (Just (tx, ty, tz))
@@ -91,13 +94,3 @@ translateY n t = translate n (0, t, 0)
 translateZ n t = translate n (0, 0, t)
 
 
--- translateXYZ :: String -> (Float, Float, Float) -> Render
--- translateXYZ n (tx, ty, tz) = do
---   rs <- get
-
---   let m = mkTransformation 0 (V3 tx ty tz)
-
---   let dict = rsObjectDict rs
---   let dict' = adjust (\(v,p) -> (v, p {opModelMatrix = m})) n dict
-
---   put rs { rsObjectDict = dict'}

@@ -9,6 +9,8 @@ module Meshview
 
 import           Meshview.Color            as X
 import           Meshview.Display          as X
+import           Meshview.MeshOBJ          as X
+import           Meshview.MeshSTL          as X
 import           Meshview.RenderMonad      as X
 import           Meshview.Simulate         as X
 import           Meshview.Types            as X
