@@ -9,6 +9,8 @@ import           Meshview.Message
 import           Meshview.Types
 
 
+constCameraSpeed = 1
+
 
 initialCameraState =
   CameraState
@@ -89,30 +91,30 @@ loop cs gref mypid =
 
 forward :: CameraState -> CameraState
 forward cs =
-  cs { csPos = csPos cs ^+^ (csDir cs) ^* 0.01 }
+  cs { csPos = csPos cs ^+^ (csDir cs) ^* constCameraSpeed }
 
 
 backwards :: CameraState -> CameraState
 backwards cs =
-  cs { csPos = csPos cs ^-^ (csDir cs) ^* 0.01}
+  cs { csPos = csPos cs ^-^ (csDir cs) ^* constCameraSpeed}
 
 
 left :: CameraState -> CameraState
 left cs =
-    cs { csPos = csPos cs ^-^ (csRight cs) ^* 0.01}
+    cs { csPos = csPos cs ^-^ (csRight cs) ^* constCameraSpeed}
 
 right :: CameraState -> CameraState
 right cs =
-    cs { csPos = csPos cs ^+^ (csRight cs) ^* 0.01}
+    cs { csPos = csPos cs ^+^ (csRight cs) ^* constCameraSpeed}
 
 
 up :: CameraState -> CameraState
 up cs =
-    cs { csPos = csPos cs ^+^ (csUp cs) ^* 0.01}
+    cs { csPos = csPos cs ^+^ (csUp cs) ^* constCameraSpeed}
 
 down :: CameraState -> CameraState
 down cs =
-    cs { csPos = csPos cs ^-^ (csUp cs) ^* 0.01}
+    cs { csPos = csPos cs ^-^ (csUp cs) ^* constCameraSpeed}
 
 
 turnLeft :: CameraState -> CameraState

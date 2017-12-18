@@ -2,6 +2,7 @@ module Meshview.MeshSTL where
 
 import           Control.Monad.State
 import qualified Data.ByteString           as B
+import           Data.Map
 import           Data.Maybe
 import qualified Data.Serialize            as S
 import qualified Graphics.Formats.STL      as STL
@@ -16,12 +17,15 @@ import           Meshview.Types
 
 meshFromSTL :: FilePath -> String -> Color -> PolygonMode -> Render
 meshFromSTL fp n col poly = do
-  bs <- lift $ B.readFile fp
-  case (S.decode bs :: Either String STL.STL) of
-    Left err -> error $ "Can't decode STL file: " ++ err
-    Right stl -> do
-      let dat = concatMap verticesOfTriangle (STL.triangles stl)
-      mesh n 3 dat col Triangles poly
+  rs <- get
+
+  unless (member n (rsObjectDict rs)) $ do
+    bs <- lift $ B.readFile fp
+    case (S.decode bs :: Either String STL.STL) of
+      Left err -> error $ "Can't decode STL file: " ++ err
+      Right stl -> do
+        let dat = concatMap verticesOfTriangle (STL.triangles stl)
+        mesh n 3 dat col Triangles poly
 
 
 verticesOfTriangle :: STL.Triangle -> [V3 Float]

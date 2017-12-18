@@ -29,18 +29,20 @@ vs' =
 
 worldToRender :: World -> Render
 worldToRender (World r) = do
---  r <- lift $ randomRIO (0, 1)
---  addCustomObject "tri" 3 vs red Triangles Fill
-  -- mesh "cube" 3 (cubeHeight 1) red TriangleFan Fill
-  -- translateX "cube" (r * 100)
-  -- mesh "line" 3 vs' blue Lines Fill
-  -- rotateX "line" (-r)
-  meshFromSTL "sample/cube.stl" "stlcube1" red Line
-  meshFromSTL "sample/cube.stl" "stlcube2" green Line
-  meshFromSTL "sample/cube.stl" "stlcube3" blue Line
-  translateX "stlcube1" (-10)
-  translateX "stlcube2" (0)
-  translateX "stlcube3" (10)
+  -- meshFromSTL "sample/cube.stl" "stlcube1" red Line
+  -- meshFromSTL "sample/cube.stl" "stlcube2" green Line
+  -- meshFromSTL "sample/cube.stl" "stlcube3" blue Line
+  -- translateX "stlcube1" (-10)
+  -- translateX "stlcube2" (0)
+  -- translateX "stlcube3" (10)
+  meshFromSTL "sample/cube.stl" "cube" red Line
+  meshFromSTL "sample/monkey.stl" "monkey" green Line
+  meshFromSTL "sample/rifle.stl" "rifle" green Line
+  meshFromSTL "sample/dragon.stl" "dragon" green Line
+  translateX "cube" (-10)
+  translateX "monkey" (0)
+  translateX "rigle" (10)
+  translateX "dragon" (30)
 --  lift $ putStrLn "worldToRender"
 
 
