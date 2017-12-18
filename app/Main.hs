@@ -29,28 +29,32 @@ vs' =
 
 worldToRender :: World -> Render
 worldToRender (World r) = do
-  -- meshFromSTL "sample/cube.stl" "stlcube1" red Line
-  -- meshFromSTL "sample/cube.stl" "stlcube2" green Line
-  -- meshFromSTL "sample/cube.stl" "stlcube3" blue Line
-  -- translateX "stlcube1" (-10)
-  -- translateX "stlcube2" (0)
-  -- translateX "stlcube3" (10)
   line "line-x" white (-1000000, 0, 0) (1000000, 0, 0)
   line "line-y" white (0, -1000000, 0) (0, 1000000, 0)
   line "line-z" white (0, 0, -1000000) (0, 0, 1000000)
-  meshFromSTL "sample/cube.stl" "cube" red Line
-  meshFromSTL "sample/monkey.stl" "monkey" green Line
-  meshFromSTL "sample/rifle.stl" "rifle" green Line
-  meshFromSTL "sample/dragon.stl" "dragon" green Line
-  translateX "cube" (-10)
-  translateX "monkey" (0)
-  translateX "rigle" (10)
-  translateX "dragon" (30)
+
+  meshFromSTL "sample/cube.stl" "cube1" red Line
+  meshFromSTL "sample/cube.stl" "cube2" green Line
+  meshFromSTL "sample/cube.stl" "cube3" blue Line
+  translateX "cube1" (-10)
+  translateX "cube2" (0)
+  translateX "cube3" (10)
+  rotate "cube1" (0, 0, r)
+  rotate "cube2" (0, r, 0)
+  rotate "cube3" (r, 0, 0)
+  -- meshFromSTL "sample/cube.stl" "cube" red Line
+  -- meshFromSTL "sample/monkey.stl" "monkey" green Line
+  -- meshFromSTL "sample/rifle.stl" "rifle" green Line
+  -- meshFromSTL "sample/dragon.stl" "dragon" green Line
+  -- translateX "cube" (-10)
+  -- translateX "monkey" (0)
+  -- translateX "rigle" (10)
+  -- translateX "dragon" (30)
 --  lift $ putStrLn "worldToRender"
 
 
 stepWorld :: Float -> World -> World
-stepWorld nsec (World r) = World (r + 0.0001)
+stepWorld nsec (World r) = World (r + 0.001)
 
 
 main :: IO ()

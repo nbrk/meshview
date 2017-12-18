@@ -145,7 +145,7 @@ cursorPosCallback gref mypid w posx posy = do
 --  putStrLn $ "cursorPosCallback: deltas " ++ show (1024/2 - posx) ++ ", " ++ show (768/2 - posy)
   let (offx, offy) = ((1024 / 2) - posx, (768 / 2) - posy)
   -- XXX mouse speed???
-  gref !* MsgGUIVertHorizAngles (offx) (offy)
+  gref !* MsgGUIVertHorizAngles (offx / 100) (offy / 100)
 
 
 windowRefreshCallback :: GroupRef Message -> Pid Message -> GLFW.WindowRefreshCallback
