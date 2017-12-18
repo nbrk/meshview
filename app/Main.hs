@@ -31,11 +31,10 @@ worldToRender :: World -> Render
 worldToRender (World r) = do
 --  r <- lift $ randomRIO (0, 1)
 --  addCustomObject "tri" 3 vs red Triangles Fill
-  addCustomObject "cube" 3 (cubeHeight 1) red TriangleFan Fill
-  rotateX "cube" r
-  addCustomObject "line" 3 vs' blue Lines Fill
+  mesh "cube" 3 (cubeHeight 1) red TriangleFan Fill
+  translateX "cube" (r * 100)
+  mesh "line" 3 vs' blue Lines Fill
   rotateX "line" (-r)
---  addCustomObject ("cube" ++ show r) 3 (cubeHeight r) green TriangleFan Fill
 --  lift $ putStrLn "worldToRender"
 
 

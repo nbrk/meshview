@@ -38,12 +38,13 @@ data RenderState = RenderState
   }
 
 data ObjectParam = ObjectParam
-  { opColor         :: Color4 GLfloat
-  , opPrimitiveMode :: PrimitiveMode
-  , opPolygonMode   :: PolygonMode
-  , opSize          :: GLsizei
-  , opModelMatrix   :: M44 Float
-  , opVisible       :: Bool
+  { opColor             :: Color4 GLfloat
+  , opPrimitiveMode     :: PrimitiveMode
+  , opPolygonMode       :: PolygonMode
+  , opSize              :: GLsizei
+  , opTranslationVector :: V3 Float
+  , opRotationQ         :: Quaternion Float
+  , opVisible           :: Bool
   }
 
 

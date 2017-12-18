@@ -6,6 +6,7 @@ import           Foreign.Ptr
 import           Foreign.Storable
 import           Graphics.GL
 import           Graphics.Rendering.OpenGL
+import           Linear
 
 import           Meshview.Types
 
@@ -47,7 +48,10 @@ setCommonUniforms rs = do
 setObjectUniforms :: RenderState -> ObjectParam -> IO ()
 setObjectUniforms rs param = do
   let p = rsProgram rs
-  uniformMatrix4fv p "ModelMatrix" (opModelMatrix param)
+  -- build the model matrix
+  let mr = mkTransformation (opRotationQ param) (V3 0 0 0)
+  let mt = transpose $ mkTransformation 0 (opTranslationVector param) -- XXX why transpose?
+  uniformMatrix4fv p "ModelMatrix" (mr !*! mt)
 
   get (uniformLocation p "ObjectColor") >>=
     \l -> uniform l $= opColor param

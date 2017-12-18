@@ -96,6 +96,7 @@ setMatricesFromCamera cs rs =
 --           (csUp cs)
            (V3 0 1 0)
   in
+    -- XXX why transpose?
     rs { rsProjectionMatrix = transpose pm
        , rsViewMatrix = transpose vm
        }

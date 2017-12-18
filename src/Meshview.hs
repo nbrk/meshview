@@ -1,6 +1,6 @@
 module Meshview
   ( module X
-  , module L
+  , L.V3(..)
   , GL.PrimitiveMode(..)
   , GL.PolygonMode(..)
   , GL.Vertex3(..)
