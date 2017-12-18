@@ -35,6 +35,9 @@ worldToRender (World r) = do
   -- translateX "stlcube1" (-10)
   -- translateX "stlcube2" (0)
   -- translateX "stlcube3" (10)
+  line "line-x" white (-1000000, 0, 0) (1000000, 0, 0)
+  line "line-y" white (0, -1000000, 0) (0, 1000000, 0)
+  line "line-z" white (0, 0, -1000000) (0, 0, 1000000)
   meshFromSTL "sample/cube.stl" "cube" red Line
   meshFromSTL "sample/monkey.stl" "monkey" green Line
   meshFromSTL "sample/rifle.stl" "rifle" green Line

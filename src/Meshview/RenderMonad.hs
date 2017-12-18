@@ -94,3 +94,8 @@ translateY n t = translate n (0, t, 0)
 translateZ n t = translate n (0, 0, t)
 
 
+----------------------
+
+line :: String -> Color -> (Float, Float, Float) -> (Float, Float, Float) -> Render
+line n col (x1, y1, z1) (x2, y2, z2) = mesh n 3 [V3 x1 y1 z1, V3 x2 y2 z2] col Lines Fill
+--  mesh :: Storable a => String -> Int -> [a] -> Color -> PrimitiveMode -> PolygonMode -> Render
