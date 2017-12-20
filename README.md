@@ -2,9 +2,9 @@
 
 Haskell library for quick visualization and simulation of arbitrary 3D mesh data.
 
-**The library is Work-In-Progress.**
+**The library is a Work-In-Progress**
 
-FPS-like (WASD style) controls and camera movements are supported; a user can view/roam the dynamic 3D-scene and
+FPS-like (WASD style) keyboard & mouse controls are supported; the user can view/roam the dynamic 3D-scene and
 explore the loaded meshes in perspective.
 
 Only `.stl` and `.obj` files (models) are supported for now, as well as some basic affine transformations like
@@ -24,7 +24,7 @@ Arguments to `simulate` are:
 - a function that specifies how a `w` is rendered (the `Render` monad)
 - a function that specifies the endomorphism of `w` performed each step
 
-Function `display` is used to draw a static scene that do not change with time.
+The `display` function is used to draw a static scene that do not change with time.
 
 ``` haskell
 import           Meshview
@@ -41,6 +41,8 @@ There are some functions to add meshes from files or vector arrays:
 mesh :: Storable a => String -> Int -> [a] -> Color -> PrimitiveMode -> PolygonMode -> Render
 meshFromSTL :: FilePath -> String -> Color -> PolygonMode -> Render
 meshFromOBJ :: FilePath -> String -> Color -> PolygonMode -> Render
+
+line :: String -> Color -> (Float, Float, Float) -> (Float, Float, Float) -> Render
 ```
 
 And some general transformations, applied to a named object:
@@ -48,7 +50,6 @@ And some general transformations, applied to a named object:
 ``` haskell
 rotateTranslateXYZ :: String -> Maybe (Float, Float, Float) -> Maybe (Float, Float, Float) -> Render
 color :: String -> Color -> Render
-line :: String -> Color -> (Float, Float, Float) -> (Float, Float, Float) -> Render
 ```
 
 ## Example
@@ -104,6 +105,19 @@ simulate disp ctrl hz startw wtom stepw = do
                , actorGUI disp ctrl
                , actorTimer hz startw wtom stepw
                , actorTimerFPSShooter 48
+               ]
+
+
+display :: Display -> Controls -> Render -> IO ()
+display disp ctrl r = do
+  runNanoErl $
+    spawnGroup [
+               actorCamera
+               , actorScene
+               , actorRenderer
+               , actorGUI disp ctrl
+               , actorUntimer r -- static Render broadcaster
+               , actorTimerFPSShooter 24
                ]
 ```
 
