@@ -37,11 +37,11 @@ resolver: lts-9.17
 # will not be run. This is useful for tweaking upstream packages.
 packages:
 - '.'
-# - location:
-#     git: https://github.com/nbrk/nano-erl-broadcast.git
-#     commit: 081e3c809c8709f2c2b84567152a198a08783899
-#   extra-dep: true
-- '../nano-erl-broadcast'
+- location:
+    git: https://github.com/nbrk/nano-erl-broadcast.git
+    commit: f6123d47fcb5b845581f8abe35a2c10518f642d3
+  extra-dep: true
+#- '../nano-erl-broadcast'
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
